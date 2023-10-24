@@ -70,6 +70,7 @@ def get_diffusion_pipelines():
 
 if __name__ == "__main__":
     if os.environ.get("HF_HOME") != "/cache/huggingface":
+        print(f"HF_HOME is set to {os.environ.get('HF_HOME')}")
         raise ValueError("HF_HOME must be set to /cache/huggingface")
 
     get_diffusion_pipelines()
