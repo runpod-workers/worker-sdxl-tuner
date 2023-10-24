@@ -2,8 +2,9 @@ import runpod
 from runpod.serverless.utils import rp_download
 import subprocess
 import os
-from huggingface_hub import snapshot_download
 import shutil
+
+MODEL_BASE_PATH = os.environ.get('MODEL_BASE_PATH', '/workspace/')
 
 def huggingface_login(token):
     try:
@@ -17,7 +18,6 @@ def huggingface_login(token):
             subprocess.run(["huggingface-cli", "login", "--token", token], check=True)
             print("Hugging Face login successful!, Token from env")
         else:
-            # Handle the case where the TOKEN environment variable is not set
             print("TOKEN environment variable is not set. Please set it before running the command.")
 
     except subprocess.CalledProcessError as e:
@@ -27,14 +27,14 @@ def huggingface_login(token):
 
 
 def run_accelerate_config():
+    """Run accelerate config command"""
     try:
         subprocess.run(["accelerate", "config", "default"], check=True)
         print("Accelerate config successful!")
-    except subprocess.CalledProcessError as e:
-        error_message = f"Error running accelerate config: {e}"
-        print(error_message)
+    except subprocess.CalledProcessError as err:
+        print(f"Error running accelerate config: {err}")
 
-MODEL_BASE_PATH = os.environ.get('MODEL_BASE_PATH', '/workspace/')
+
 def handler(job):
     '''
     This is the handler function that will be called by the serverless.
@@ -42,18 +42,15 @@ def handler(job):
     job_input = job["input"]
     job_id = job["id"]
 
-    # Get the parameters from the job input
     dataset_directory_path = job_input["dataset_url"]
     instance_prompt = job_input["instance_prompt"]
     batch_size = job_input["batch_size"]
-    hf_token = job_input["hf_token"]
     training_steps = job_input["training_steps"]
 
-    # example:  local_dataset_directory = "./dog"
+    hf_token = job_input["hf_token"]
 
 
-
-     # -------------------------- Download Training Data -------------------------- #
+    # -------------------------- Download Training Data -------------------------- #
     downloaded_input = rp_download.file(dataset_directory_path)
     print(f"Downloaded input: {downloaded_input}")
     # Make clean data directory
@@ -77,10 +74,6 @@ def handler(job):
     os.makedirs(f"job_files/{job_id}", exist_ok=True)
     os.makedirs(f"job_files/{job_id}/fine_tuned_model", exist_ok=True)
 
-    # -------------------------- Run Training -------------------------- #
-    job_output = {}
-
-    # most of the parameteres will be path (Network storage)
 
     training_command = (
         "accelerate launch train_dreambooth_lora_sdxl.py "
@@ -105,7 +98,11 @@ def handler(job):
         "--seed=0 "
         "--push_to_hub"
     )
+
+    # -------------------------- Run Training -------------------------- #
     try:
+        job_output = {}
+
         # Execute the command and capture the output
         huggingface_login(hf_token)
         run_accelerate_config()
@@ -115,12 +112,11 @@ def handler(job):
         job_output = {"output_directory": f"job_files/{job_id}/fine_tuned_model"}
         return job_output
 
-    except subprocess.CalledProcessError as e:
-        error_message = f"Error running command: {e}\nOutput: {e.output}"
+    except subprocess.CalledProcessError as err:
+        error_message = f"Error running command: {err}\nOutput: {err.output}"
         print(error_message)
-        # Return an error message or status code
-        return error_message
+        return {"error": error_message}
 
-# Call the handler function
 
+# -------------------------- Start Serverless Worker ------------------------- #
 runpod.serverless.start({"handler": handler})

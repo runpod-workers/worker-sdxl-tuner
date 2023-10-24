@@ -1,8 +1,3 @@
-# Required Python packages get listed here, one per line.
-# Reccomended to lock the version number to avoid unexpected changes.
-
-# torchvision==0.14.1+cu117
-
 runpod==1.3.0
 torchvision
 huggingface-hub==0.17.3

@@ -26,4 +26,4 @@ RUN python /cache_model.py && \
 
 ADD src .
 
-CMD ["bash", "-c", "accelerate config default && python -u handler.py"]
+CMD ["python -u handler.py"]
