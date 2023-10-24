@@ -31,7 +31,21 @@ COPY builder/cache_model.py /cache_model.py
 RUN python /cache_model.py && \
     rm /cache_model.py
 
-
+# Copy Source Code
 ADD src .
+
+# Basic validation
+# Verify that the cache folder is not empty
+RUN test -n "$(ls -A /cache/huggingface/modules/)" && \
+    test -n "$(ls -A /cache/huggingface/datasets/)" && \
+    test -n "$(ls -A /cache/huggingface/metrics/)" && \
+    test -n "$(ls -A /cache/huggingface/hub/)" && \
+    test -n "$(ls -A /cache/huggingface/assets/)" && \
+    test -n "$(ls -A /cache/huggingface/)" && \
+    test -n "$(ls -A /cache/)" && \
+    test -n "$(ls -A /workspace/src/)" && \
+    test -n "$(ls -A /workspace/)" && \
+    test -n "$(ls -A /)"
+
 
 CMD ["python", "-u", "handler.py"]
