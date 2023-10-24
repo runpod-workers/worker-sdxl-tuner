@@ -24,7 +24,8 @@ def get_diffusion_pipelines():
     common_args = {
         "torch_dtype": torch.float16,
         "variant": "fp16",
-        "use_safetensors": True
+        "use_safetensors": True,
+        "cache_dir": "/cache/hf"
     }
 
     fetch_pretrained_model(
