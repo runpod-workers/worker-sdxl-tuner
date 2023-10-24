@@ -84,7 +84,7 @@ def import_model_class_from_model_name_or_path(
     pretrained_model_name_or_path: str, revision: str, subfolder: str = "text_encoder"
 ):
     text_encoder_config = PretrainedConfig.from_pretrained(
-        pretrained_model_name_or_path, subfolder=subfolder, revision=revision, cache_dir="/cache/hf"
+        pretrained_model_name_or_path, subfolder=subfolder, revision=revision
     )
     model_class = text_encoder_config.architectures[0]
 
@@ -627,7 +627,6 @@ def main(args):
                 torch_dtype=torch_dtype,
                 revision=args.revision,
                 local_files_only=True,
-                cache_dir="/cache/hf",
             )
             pipeline.set_progress_bar_config(disable=True)
 
@@ -666,10 +665,10 @@ def main(args):
 
     # Load the tokenizers
     tokenizer_one = AutoTokenizer.from_pretrained(
-        args.pretrained_model_name_or_path, subfolder="tokenizer", revision=args.revision, use_fast=False, cache_dir="/cache/hf"
+        args.pretrained_model_name_or_path, subfolder="tokenizer", revision=args.revision, use_fast=False
     )
     tokenizer_two = AutoTokenizer.from_pretrained(
-        args.pretrained_model_name_or_path, subfolder="tokenizer_2", revision=args.revision, use_fast=False, cache_dir="/cache/hf"
+        args.pretrained_model_name_or_path, subfolder="tokenizer_2", revision=args.revision, use_fast=False
     )
 
     # import correct text encoder classes
@@ -683,10 +682,10 @@ def main(args):
     # Load scheduler and models
     noise_scheduler = DDPMScheduler.from_pretrained(args.pretrained_model_name_or_path, subfolder="scheduler")
     text_encoder_one = text_encoder_cls_one.from_pretrained(
-        args.pretrained_model_name_or_path, subfolder="text_encoder", revision=args.revision, cache_dir="/cache/hf"
+        args.pretrained_model_name_or_path, subfolder="text_encoder", revision=args.revision
     )
     text_encoder_two = text_encoder_cls_two.from_pretrained(
-        args.pretrained_model_name_or_path, subfolder="text_encoder_2", revision=args.revision, cache_dir="/cache/hf"
+        args.pretrained_model_name_or_path, subfolder="text_encoder_2", revision=args.revision
     )
     vae_path = (
         args.pretrained_model_name_or_path
@@ -694,10 +693,10 @@ def main(args):
         else args.pretrained_vae_model_name_or_path
     )
     vae = AutoencoderKL.from_pretrained(
-        vae_path, subfolder="vae" if args.pretrained_vae_model_name_or_path is None else None, revision=args.revision, local_files_only=True, cache_dir="/cache/hf"
+        vae_path, subfolder="vae" if args.pretrained_vae_model_name_or_path is None else None, revision=args.revision, local_files_only=True
     )
     unet = UNet2DConditionModel.from_pretrained(
-        args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision, cache_dir="/cache/hf"
+        args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision
     )
 
     # We only train the additional adapter LoRA layers

@@ -5,6 +5,7 @@ ARG HUGGING_FACE_HUB_WRITE_TOKEN
 ENV HUGGING_FACE_HUB_WRITE_TOKEN=$HUGGING_FACE_HUB_WRITE_TOKEN
 
 ENV HF_HOME = "/cache/huggingface/"
+ENV HUGGINFACE_HUB_CACHE = "/cache/huggingface/hub/"
 ENV HF_DATASETS_CACHE = "/cache/huggingface/datasets/"
 ENV DEFAULT_HF_METRICS_CACHE = "/cache/huggingface/metrics/"
 ENV DEFAULT_HF_MODULES_CACHE = "/cache/huggingface/modules/"
