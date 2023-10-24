@@ -1,3 +1,4 @@
+import os
 import torch
 from transformers import AutoTokenizer, PretrainedConfig, CLIPTextModel, CLIPTextModelWithProjection
 from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler
@@ -68,4 +69,7 @@ def get_diffusion_pipelines():
 
 
 if __name__ == "__main__":
+    if os.environ.get("HF_HOME") != "/cache/huggingface":
+        raise ValueError("HF_HOME must be set to /cache/huggingface")
+
     get_diffusion_pipelines()
