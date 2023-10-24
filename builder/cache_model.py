@@ -1,5 +1,5 @@
 import torch
-from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler
+from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler, PretrainedConfig
 
 
 def fetch_pretrained_model(model_class, model_name, **kwargs):
@@ -42,6 +42,14 @@ def get_diffusion_pipelines():
 
     fetch_pretrained_model(
         DDPMScheduler, "stabilityai/stable-diffusion-xl-base-1.0", **{"subfolder": "scheduler"}
+    )
+
+    fetch_pretrained_model(
+        PretrainedConfig, "stabilityai/stable-diffusion-xl-base-1.0", **{"subfolder": "text_encoder"}
+    )
+
+    fetch_pretrained_model(
+        PretrainedConfig, "stabilityai/stable-diffusion-xl-base-1.0", **{"subfolder": "text_encoder_2"}
     )
 
 
