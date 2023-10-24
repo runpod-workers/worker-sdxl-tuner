@@ -27,4 +27,4 @@ RUN python /cache_model.py && \
 
 ADD src .
 
-CMD ["python -u handler.py"]
+CMD ["python", "-u", "handler.py"]
