@@ -3,6 +3,7 @@ FROM runpod/pytorch:1.13.0-py3.10-cuda11.7.1-devel
 
 ARG HUGGING_FACE_HUB_WRITE_TOKEN
 ENV HUGGING_FACE_HUB_WRITE_TOKEN=$HUGGING_FACE_HUB_WRITE_TOKEN
+ENV HF_DATASETS_CACHE="/cache/hf-datasets"
 
 # Use bash shell with pipefail option
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -25,5 +26,7 @@ RUN python /cache_model.py && \
 
 
 ADD src .
+
+RUN python handler.py
 
 CMD ["python -u handler.py"]
