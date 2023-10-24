@@ -1,31 +1,5 @@
-# import os
-# from huggingface_hub import snapshot_download
-
-# # Get the hugging face token
-# HUGGING_FACE_HUB_TOKEN = os.environ.get('HUGGING_FACE_HUB_WRITE_TOKEN', None)
-# MODEL_NAME = "stabilityai/stable-diffusion-xl-base-1.0"
-# MODEL_REVISION = os.environ.get('MODEL_REVISION', "main")
-# MODEL_BASE_PATH = os.environ.get('MODEL_BASE_PATH', '/workspace/')
-
-# # Download the model from hugging face
-# download_kwargs = {}
-
-# if HUGGING_FACE_HUB_TOKEN:
-#     download_kwargs["token"] = HUGGING_FACE_HUB_TOKEN
-
-# snapshot_download(
-#     MODEL_NAME,
-#     revision="main",
-#     # allow_patterns="*.safetensors",
-#     local_dir=f"{MODEL_BASE_PATH}{MODEL_NAME.split('/')[1]}",
-#     **download_kwargs
-# )
-
-
-# builder/model_fetcher.py
-
 import torch
-from diffusers import StableDiffusionXLPipeline, StableDiffusionXLImg2ImgPipeline, AutoencoderKL
+from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler
 
 
 def fetch_pretrained_model(model_class, model_name, **kwargs):
@@ -38,8 +12,7 @@ def fetch_pretrained_model(model_class, model_name, **kwargs):
             return model_class.from_pretrained(model_name, **kwargs)
         except OSError as err:
             if attempt < max_retries - 1:
-                print(
-                    f"Error encountered: {err}. Retrying attempt {attempt + 1} of {max_retries}...")
+                print(f"Error encountered: {err}. Retrying attempt {attempt + 1} of {max_retries}...")
             else:
                 raise
 
@@ -53,11 +26,23 @@ def get_diffusion_pipelines():
         "variant": "fp16",
         "use_safetensors": True
     }
-    vae = AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16)
-    pipe = fetch_pretrained_model(StableDiffusionXLPipeline,
-                                  "stabilityai/stable-diffusion-xl-base-1.0", **common_args)
+    AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16)
 
-    return pipe
+    fetch_pretrained_model(
+        StableDiffusionXLPipeline, "stabilityai/stable-diffusion-xl-base-1.0", **common_args
+    )
+
+    fetch_pretrained_model(
+        AutoencoderKL, "madebyollin/sdxl-vae-fp16-fix", **common_args
+    )
+
+    fetch_pretrained_model(
+        UNet2DConditionModel, "stabilityai/stable-diffusion-xl-base-1.0", subfolder="unet", **common_args
+    )
+
+    fetch_pretrained_model(
+        DDPMScheduler, "stabilityai/stable-diffusion-xl-base-1.0", subfolder="scheduler", **common_args
+    )
 
 
 if __name__ == "__main__":

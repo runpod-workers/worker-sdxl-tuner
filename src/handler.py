@@ -109,7 +109,7 @@ def handler(job):
         # Execute the command and capture the output
         huggingface_login(hf_token)
         run_accelerate_config()
-        output = subprocess.run(training_command, stderr=subprocess.STDOUT, text=True, shell=True, check=True)
+        subprocess.run(training_command, stderr=subprocess.STDOUT, text=True, shell=True, check=True)
 
         # Return the output directory or a message indicating success
         job_output = {"output_directory": f"job_files/{job_id}/fine_tuned_model"}

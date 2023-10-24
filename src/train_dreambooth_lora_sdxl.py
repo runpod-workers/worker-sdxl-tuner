@@ -1,18 +1,3 @@
-#!/usr/bin/env python
-# coding=utf-8
-# Copyright 2023 The HuggingFace Inc. team. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-
 import argparse
 import gc
 import hashlib
@@ -55,10 +40,6 @@ from diffusers.models.attention_processor import LoRAAttnProcessor, LoRAAttnProc
 from diffusers.optimization import get_scheduler
 from diffusers.utils import check_min_version, is_wandb_available
 from diffusers.utils.import_utils import is_xformers_available
-
-
-# Will error if the minimal version of diffusers is not installed. Remove at your own risks.
-# check_min_version("0.22.0.dev0")
 
 
 logger = get_logger(__name__)
@@ -713,7 +694,6 @@ def main(args):
     )
     vae = AutoencoderKL.from_pretrained(
         vae_path, subfolder="vae" if args.pretrained_vae_model_name_or_path is None else None, revision=args.revision, local_files_only=True,
-
     )
     unet = UNet2DConditionModel.from_pretrained(
         args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision
