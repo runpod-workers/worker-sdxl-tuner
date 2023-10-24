@@ -12,12 +12,6 @@ ENV DEFAULT_HF_MODULES_CACHE="/cache/huggingface/modules"
 ENV HUGGINFACE_HUB_CACHE="/cache/huggingface/hub"
 ENV HUGGINGFACE_ASSETS_CACHE="/cache/huggingface/assets"
 
-RUN mkdir -p /cache/huggingface/datasets && \
-    mkdir -p /cache/huggingface/metrics && \
-    mkdir -p /cache/huggingface/modules && \
-    mkdir -p /cache/huggingface/hub && \
-    mkdir -p /cache/huggingface/assets
-
 # Use bash shell with pipefail option
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -43,5 +37,6 @@ ADD src .
 # Basic validation
 # Verify that the cache folder is not empty
 RUN test -n "$(ls -A /cache/huggingface)"
+
 
 CMD ["python", "-u", "handler.py"]
