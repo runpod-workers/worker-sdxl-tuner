@@ -34,9 +34,7 @@ def get_diffusion_pipelines():
     )
 
     fetch_pretrained_model(
-        AutoencoderKL, "madebyollin/sdxl-vae-fp16-fix", **{
-            "torch_dtype": torch.float16,
-            }
+        AutoencoderKL, "madebyollin/sdxl-vae-fp16-fix", **{"torch_dtype": torch.float16}
     )
 
     fetch_pretrained_model(
