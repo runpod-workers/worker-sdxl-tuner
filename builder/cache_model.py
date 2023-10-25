@@ -4,6 +4,25 @@ from transformers import AutoTokenizer, PretrainedConfig, CLIPTextModel, CLIPTex
 from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler
 
 
+def import_model_class_from_model_name_or_path(
+    pretrained_model_name_or_path: str, revision: str, subfolder: str = "text_encoder"
+):
+    text_encoder_config = PretrainedConfig.from_pretrained(
+        pretrained_model_name_or_path, subfolder=subfolder, revision=revision
+    )
+    model_class = text_encoder_config.architectures[0]
+
+    if model_class == "CLIPTextModel":
+        from transformers import CLIPTextModel
+
+        return CLIPTextModel
+    elif model_class == "CLIPTextModelWithProjection":
+        from transformers import CLIPTextModelWithProjection
+
+        return CLIPTextModelWithProjection
+    else:
+        raise ValueError(f"{model_class} is not supported.")
+
 def fetch_pretrained_model(model_class, model_name, **kwargs):
     '''
     Fetches a pretrained model from the HuggingFace model hub.
@@ -65,6 +84,21 @@ def get_diffusion_pipelines():
         }
     )
 
+    text_encoder_cls_one = import_model_class_from_model_name_or_path(
+        "stabilityai/stable-diffusion-xl-base-1.0", None
+    )
+    text_encoder_cls_two = import_model_class_from_model_name_or_path(
+        "stabilityai/stable-diffusion-xl-base-1.0", None, subfolder="text_encoder_2"
+    )
+
+    text_encoder_one = text_encoder_cls_one.from_pretrained(
+        "stabilityai/stable-diffusion-xl-base-1.0", subfolder="text_encoder", revision=None
+    )
+    text_encoder_two = text_encoder_cls_two.from_pretrained(
+         "stabilityai/stable-diffusion-xl-base-1.0", subfolder="text_encoder_2", revision=None
+    )
+    pipe = fetch_pretrained_model(StableDiffusionXLPipeline,
+                                  "stabilityai/stable-diffusion-xl-base-1.0", **common_args)
 
 
 
