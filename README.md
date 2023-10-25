@@ -2,7 +2,7 @@
 
 <h1>SDXL Fine Tuning | Worker</h1>
 
-[![CI | Test Worker](https://github.com/runpod-workers/worker-template/actions/workflows/CI-test_worker.yml/badge.svg)](https://github.com/runpod-workers/worker-template/actions/workflows/CI-test_worker.yml)
+[![CI | Test Handler](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/CI-test_handler.yml/badge.svg)](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/CI-test_handler.yml)
 &nbsp;
 [![Docker Image](https://github.com/runpod-workers/worker-template/actions/workflows/CD-docker_dev.yml/badge.svg)](https://github.com/runpod-workers/worker-template/actions/workflows/CD-docker_dev.yml)
 
