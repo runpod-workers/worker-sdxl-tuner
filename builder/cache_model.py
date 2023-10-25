@@ -1,6 +1,6 @@
 import os
 import torch
-from transformers import AutoTokenizer, PretrainedConfig, CLIPTextModel, CLIPTextModelWithProjection
+from transformers import AutoTokenizer, PretrainedConfig
 from diffusers import StableDiffusionXLPipeline, AutoencoderKL, UNet2DConditionModel, DDPMScheduler
 
 
@@ -91,13 +91,13 @@ def get_diffusion_pipelines():
         "stabilityai/stable-diffusion-xl-base-1.0", None, subfolder="text_encoder_2"
     )
 
-    text_encoder_one = text_encoder_cls_one.from_pretrained(
+    text_encoder_cls_one.from_pretrained(
         "stabilityai/stable-diffusion-xl-base-1.0", subfolder="text_encoder", revision=None
     )
-    text_encoder_two = text_encoder_cls_two.from_pretrained(
+    text_encoder_cls_two.from_pretrained(
          "stabilityai/stable-diffusion-xl-base-1.0", subfolder="text_encoder_2", revision=None
     )
-    pipe = fetch_pretrained_model(StableDiffusionXLPipeline,
+    fetch_pretrained_model(StableDiffusionXLPipeline,
                                   "stabilityai/stable-diffusion-xl-base-1.0", **common_args)
 
 
