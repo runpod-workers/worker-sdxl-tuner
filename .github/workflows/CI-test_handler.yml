@@ -64,12 +64,12 @@ jobs:
                                                     "instance_prompt": "a photo of sks dog", \
                                                     "batch_size": 32, \
                                                     "training_steps": 1, \
-                                                    "local_directory": "./cat", \
+                                                    "local_directory": "./cat" \
                                                     } \
                                                 }'
 
   cleanup:
-    if: ${{ always() && !success() }}
+    if: ${{ failure() }}
     needs: launch_runner_worker
     runs-on: ubuntu-latest
 
