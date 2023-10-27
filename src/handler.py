@@ -80,7 +80,7 @@ def handler(job):
         "--pretrained_model_name_or_path='stabilityai/stable-diffusion-xl-base-1.0' "
         "--pretrained_vae_model_name_or_path='madebyollin/sdxl-vae-fp16-fix' "
         f"--instance_data_dir=job_files/{job_id}/clean_data "
-        f"--output_dir=outputjob_files/{job_id}/fine_tuned_model "
+        f"--output_dir=outputjob_files/{job_id} "
         "--mixed_precision=fp16 "
         f"--instance_prompt='{instance_prompt}' "
         "--resolution=1024 "
