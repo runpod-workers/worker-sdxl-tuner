@@ -4,7 +4,7 @@
 
 [![CI | Test Handler](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/CI-test_handler.yml/badge.svg)](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/CI-test_handler.yml)
 &nbsp;
-[![Docker Image](https://github.com/runpod-workers/worker-template/actions/workflows/CD-docker_dev.yml/badge.svg)](https://github.com/runpod-workers/worker-template/actions/workflows/CD-docker_dev.yml)
+[![CD | Build-Test-Release](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/build-test-release.yml/badge.svg)](https://github.com/runpod-workers/worker-sdxl-tuner/actions/workflows/build-test-release.yml)
 
 🚀 | This serverless worker is used for fine tuning SDXL. It supports dynamic auto-scaling using the built-in RunPod autoscaling feature.
 

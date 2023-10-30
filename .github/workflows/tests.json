@@ -1,0 +1,16 @@
+[
+    {
+        "hardwareConfig": {
+            "endpointConfig": {
+                "gpuIds": "ADA_24,AMPERE_24,AMPERE_48,AMPERE_80"
+            }
+        },
+        "input": {
+            "dataset_url": "https://github.com/runpod-workers/sample-inputs/raw/main/images/runpod_dog2.zip",
+            "instance_prompt": "a photo of sks dog",
+            "batch_size": 32,
+            "training_steps": 1,
+            "local_directory": "./cat"
+        }
+    }
+]
