@@ -29,7 +29,7 @@ The following inputs can be used for testing the model:
 ```json
 {
   "input": {
-    "dataset_directory_path": "/workspace/data/dataset",
+    "dataset_url": "https://github.com/runpod-workers/sample-inputs/raw/main/images/runpod_dog2.zip",
     "output_directory": "/workspace/output",
     "instance_prompt": "a photo of <subject>",
     "batch_size": 32,
